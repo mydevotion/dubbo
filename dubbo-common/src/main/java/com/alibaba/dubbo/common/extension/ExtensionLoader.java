@@ -797,8 +797,9 @@ public class ExtensionLoader<T> {
                         break;
                     }
                 }
-                // 有类型为URL的参数
                 if (urlTypeIndex != -1) {
+                    // 有类型为URL的参数
+
                     // Null Point check
                     String s = String.format("\nif (arg%d == null) throw new IllegalArgumentException(\"url == null\");",
                             urlTypeIndex);
@@ -806,9 +807,9 @@ public class ExtensionLoader<T> {
 
                     s = String.format("\n%s url = arg%d;", URL.class.getName(), urlTypeIndex);
                     code.append(s);
-                }
-                // 参数没有URL类型
-                else {
+                } else {
+                    // 参数没有URL类型
+
                     String attribMethod = null;
 
                     // 找到参数的URL属性
@@ -846,7 +847,8 @@ public class ExtensionLoader<T> {
                 }
 
                 String[] value = adaptiveAnnotation.value();
-                // 没有设置Key，则使用“扩展点接口名的点分隔 作为Key
+                // 没有设置Key，则使用扩展点的类名(不带报名)，类名如果有大写则前面加"."且换成小写字母
+                // 例如接口名为ClientNospringTest，则key为client.nospring.test
                 if (value.length == 0) {
                     char[] charArray = type.getSimpleName().toCharArray();
                     StringBuilder sb = new StringBuilder(128);
