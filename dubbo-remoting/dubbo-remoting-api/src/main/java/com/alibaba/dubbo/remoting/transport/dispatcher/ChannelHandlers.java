@@ -24,26 +24,29 @@ import com.alibaba.dubbo.remoting.exchange.support.header.HeartbeatHandler;
 import com.alibaba.dubbo.remoting.transport.MultiMessageHandler;
 
 /**
- * @author chao.liuc
+ * 类似于一个单例模式
  *
+ * @author chao.liuc
  */
 public class ChannelHandlers {
 
-    public static ChannelHandler wrap(ChannelHandler handler, URL url){
-        return ChannelHandlers.getInstance().wrapInternal(handler, url);
-    }
-
-    protected ChannelHandlers() {}
-
-    protected ChannelHandler wrapInternal(ChannelHandler handler, URL url) {
-        return new MultiMessageHandler(new HeartbeatHandler(ExtensionLoader.getExtensionLoader(Dispatcher.class)
-                                        .getAdaptiveExtension().dispatch(handler, url)));
-    }
-
     private static ChannelHandlers INSTANCE = new ChannelHandlers();
+
+    protected ChannelHandlers() {
+    }
 
     protected static ChannelHandlers getInstance() {
         return INSTANCE;
+    }
+
+    public static ChannelHandler wrap(ChannelHandler handler, URL url) {
+        return ChannelHandlers.getInstance().wrapInternal(handler, url);
+    }
+
+
+    protected ChannelHandler wrapInternal(ChannelHandler handler, URL url) {
+        return new MultiMessageHandler(new HeartbeatHandler(ExtensionLoader.getExtensionLoader(Dispatcher.class)
+                .getAdaptiveExtension().dispatch(handler, url)));
     }
 
     static void setTestingChannelHandlers(ChannelHandlers instance) {

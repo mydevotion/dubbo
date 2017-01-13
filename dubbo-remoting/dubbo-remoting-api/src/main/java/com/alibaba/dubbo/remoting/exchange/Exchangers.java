@@ -27,7 +27,7 @@ import com.alibaba.dubbo.remoting.transport.ChannelHandlerAdapter;
 
 /**
  * Exchanger facade. (API, Static, ThreadSafe)
- * 
+ *
  * @author william.liangf
  */
 public class Exchangers {
@@ -36,7 +36,7 @@ public class Exchangers {
         return bind(URL.valueOf(url), replier);
     }
 
-    public static ExchangeServer bind(URL url,  Replier<?> replier) throws RemotingException {
+    public static ExchangeServer bind(URL url, Replier<?> replier) throws RemotingException {
         return bind(url, new ChannelHandlerAdapter(), replier);
     }
 
@@ -47,11 +47,20 @@ public class Exchangers {
     public static ExchangeServer bind(URL url, ChannelHandler handler, Replier<?> replier) throws RemotingException {
         return bind(url, new ExchangeHandlerDispatcher(replier, handler));
     }
-    
+
     public static ExchangeServer bind(String url, ExchangeHandler handler) throws RemotingException {
         return bind(URL.valueOf(url), handler);
     }
 
+    /**
+     * 在url的IP地址上放开服务，收到请求的时候用handler处理
+     * 如果url参数上没有codec，则设置个默认值exchange
+     *
+     * @param url
+     * @param handler
+     * @return
+     * @throws RemotingException
+     */
     public static ExchangeServer bind(URL url, ExchangeHandler handler) throws RemotingException {
         if (url == null) {
             throw new IllegalArgumentException("url == null");
@@ -86,7 +95,7 @@ public class Exchangers {
     public static ExchangeClient connect(URL url, ChannelHandler handler, Replier<?> replier) throws RemotingException {
         return connect(url, new ExchangeHandlerDispatcher(replier, handler));
     }
-    
+
     public static ExchangeClient connect(String url, ExchangeHandler handler) throws RemotingException {
         return connect(URL.valueOf(url), handler);
     }
@@ -116,7 +125,7 @@ public class Exchangers {
         Version.checkDuplicate(Exchangers.class);
     }
 
-    private Exchangers(){
+    private Exchangers() {
     }
 
 }
