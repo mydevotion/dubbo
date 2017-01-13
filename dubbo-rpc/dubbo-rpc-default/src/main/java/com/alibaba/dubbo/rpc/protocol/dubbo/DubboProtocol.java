@@ -195,7 +195,6 @@ public class DubboProtocol extends AbstractProtocol {
     }
 
     /**
-     *
      * @param channel
      * @param inv
      * @return
@@ -275,6 +274,7 @@ public class DubboProtocol extends AbstractProtocol {
      */
     private void openServer(URL url) {
         // find server.
+        // 此处的key是host+port，也就是说相同的host+port只会open一次
         String key = url.getAddress();
         //client 也可以暴露一个只有server可以调用的服务。
         boolean isServer = url.getParameter(Constants.IS_SERVER_KEY, true);

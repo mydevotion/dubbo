@@ -33,19 +33,19 @@ import com.alibaba.dubbo.remoting.ChannelHandler;
 
 /**
  * NettyHandler
- * 
+ *
  * @author william.liangf
  */
 @Sharable
 public class NettyHandler extends SimpleChannelHandler {
 
     private final Map<String, Channel> channels = new ConcurrentHashMap<String, Channel>(); // <ip:port, channel>
-    
+
     private final URL url;
-    
+
     private final ChannelHandler handler;
-    
-    public NettyHandler(URL url, ChannelHandler handler){
+
+    public NettyHandler(URL url, ChannelHandler handler) {
         if (url == null) {
             throw new IllegalArgumentException("url == null");
         }
@@ -60,6 +60,13 @@ public class NettyHandler extends SimpleChannelHandler {
         return channels;
     }
 
+    /**
+     * netty连接,从此处可以看到传给外面的Channel接口的实现，均为NettyChannel
+     *
+     * @param ctx
+     * @param e
+     * @throws Exception
+     */
     @Override
     public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
         NettyChannel channel = NettyChannel.getOrAddChannel(ctx.getChannel(), url, handler);
@@ -83,7 +90,7 @@ public class NettyHandler extends SimpleChannelHandler {
             NettyChannel.removeChannelIfDisconnected(ctx.getChannel());
         }
     }
-    
+
     @Override
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
         NettyChannel channel = NettyChannel.getOrAddChannel(ctx.getChannel(), url, handler);
