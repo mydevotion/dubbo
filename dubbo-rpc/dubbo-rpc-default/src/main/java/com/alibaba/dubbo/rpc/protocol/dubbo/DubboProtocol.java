@@ -134,6 +134,7 @@ public class DubboProtocol extends AbstractProtocol {
         }
 
         private void invoke(Channel channel, String methodKey) {
+            // 实际上 methodKey为 "onconnect"，即从 connected(Channel channel)方法过来的时候，此处的invocation为null
             Invocation invocation = createInvocation(channel, channel.getUrl(), methodKey);
             if (invocation != null) {
                 try {
